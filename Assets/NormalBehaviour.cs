@@ -17,10 +17,6 @@ public class NormalBehaviour : MonoBehaviour
     
     [SerializeField]
     private float moveSpeed;
-    [SerializeField]
-    private float distanceToFlee;
-
-    public bool isLured;
     
     [SerializeField]
     private GameObject voidAnim;
@@ -30,8 +26,6 @@ public class NormalBehaviour : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
-       // _undecidedBehaviour = FindObjectOfType<UndecidedBehaviour>();
-        //InvokeRepeating(nameof(CheckUndecided), 5f, 1f);
     }
 
     // Update is called once per frame
@@ -81,8 +75,8 @@ public class NormalBehaviour : MonoBehaviour
         {
             Destroy(gameObject);
             Instantiate(voidAnim, transform.position, quaternion.identity);
+            _undecidedBehaviour.haveLured++;
             yield break;
-            
         }
     }
 

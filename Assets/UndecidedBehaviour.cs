@@ -11,12 +11,8 @@ public class UndecidedBehaviour : MonoBehaviour
     
     public bool canLure, limitReached;
     [SerializeField]
-    int haveLured = 0;
-    
+    public int haveLured = 0;
 
-    [SerializeField]
-    private GameObject voidAnim;
-    
     private NormalBehaviour[] arrayNormals;
 
     // Start is called before the first frame update
@@ -50,11 +46,6 @@ public class UndecidedBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Normals"))
         {
-            if (canLure)
-            {
-                haveLured++;
-            }
-            
             if (haveLured >= 5)
             {
                 limitReached = true;
