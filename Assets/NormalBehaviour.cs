@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using Unity.Mathematics;
 using UnityEngine;
+using Object = System.Object;
+using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
 public class NormalBehaviour : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
-    private UndecidedBehaviour _undecidedBehaviour;
+    public UndecidedBehaviour _undecidedBehaviour;
     private Rigidbody2D _rigidbody2D;
     
     [SerializeField]
@@ -18,15 +21,17 @@ public class NormalBehaviour : MonoBehaviour
     private float distanceToFlee;
 
     public bool isLured;
-
     
+    [SerializeField]
+    private GameObject voidAnim;
     
     // Start is called before the first frame update
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
-        _undecidedBehaviour = FindObjectOfType<UndecidedBehaviour>();
+       // _undecidedBehaviour = FindObjectOfType<UndecidedBehaviour>();
+        //InvokeRepeating(nameof(CheckUndecided), 5f, 1f);
     }
 
     // Update is called once per frame
@@ -34,29 +39,55 @@ public class NormalBehaviour : MonoBehaviour
     {
         var position = transform.position;
         float distance = Vector3.Distance(position, _playerMovement.transform.position);
-//        float distanceToLured = Vector3.Distance(position, _undecidedBehaviour.transform.position);
 
-        if (!isLured)
+        if(_undecidedBehaviour == null) return;
+        
+        if (!_undecidedBehaviour.canLure || _undecidedBehaviour.limitReached)
         {
             if(distance > 1 && distance < 3)
             {
                 transform.position = Vector2.MoveTowards(transform.position, _playerMovement.transform.position,
-                    -1 * moveSpeed * Time.deltaTime);
+                    -1 * Random.Range(1f, moveSpeed) * Time.deltaTime);
             }
-            else if (distance > 4)
+            else if (distance >= 4)
             {
                 transform.position = Vector2.MoveTowards(transform.position, _playerMovement.transform.position,
-                    moveSpeed * Time.deltaTime);
+                     Random.Range(1f, moveSpeed) * Time.deltaTime);
             }
         }
         else
         {
-            var undecidedPosition = _undecidedBehaviour.transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, undecidedPosition,
-                    moveSpeed * Time.deltaTime);
+            if (!_undecidedBehaviour.limitReached || _undecidedBehaviour.canLure)
+            {
+                var undecidedPosition = _undecidedBehaviour.transform.position;
+                transform.position = Vector3.MoveTowards(transform.position, undecidedPosition,
+                    Random.Range(0.2f, 1f) * Time.deltaTime);
+            }
+        }
+    }
 
-            //Destroy(gameObject);
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Undecided"))
+        {
+            StartCoroutine(DeathLoop());
         }
         
+    }
+
+    IEnumerator DeathLoop()
+    {
+        if (_undecidedBehaviour.canLure)
+        {
+            Destroy(gameObject);
+            Instantiate(voidAnim, transform.position, quaternion.identity);
+            yield break;
+            
+        }
+    }
+
+    void CheckUndecided()
+    {
+        _undecidedBehaviour = FindObjectOfType<UndecidedBehaviour>();
     }
 }

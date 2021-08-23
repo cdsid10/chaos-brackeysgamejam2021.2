@@ -9,16 +9,26 @@ public class UndecidedBehaviour : MonoBehaviour
     private PlayerActions _playerActions;
     private NormalBehaviour _normalBehaviour;
     
-    public bool canInteract;
+    public bool canLure, limitReached;
+    [SerializeField]
+    int haveLured = 0;
     
+
     [SerializeField]
     private GameObject voidAnim;
+    
+    private NormalBehaviour[] arrayNormals;
 
     // Start is called before the first frame update
     void Start()
     {
         _playerActions = FindObjectOfType<PlayerActions>();
         _normalBehaviour = FindObjectOfType<NormalBehaviour>();
+        arrayNormals = GameObject.FindObjectsOfType<NormalBehaviour>();
+        foreach (var n in arrayNormals)
+        {
+            n._undecidedBehaviour = this;
+        }
     }
 
     // Update is called once per frame
@@ -27,30 +37,39 @@ public class UndecidedBehaviour : MonoBehaviour
         if (_playerActions.isPressing)
         {
             _playerActions.Recruit();
-            
-            _normalBehaviour.isLured = true;
+        }
+
+        if (_playerActions.isUndecidedRecruited)
+        {
+            canLure = true;
         }
     }
     
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Normals"))
         {
-            canInteract = true;
-        }
-
-        if (other.CompareTag("Normals") && _normalBehaviour.isLured)
-        {
-            Instantiate(voidAnim, transform.position, quaternion.identity);
+            if (canLure)
+            {
+                haveLured++;
+            }
+            
+            if (haveLured >= 5)
+            {
+                limitReached = true;
+                _playerActions.isUndecidedRecruited = false;
+                canLure = false;
+                gameObject.SetActive(false);
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            canInteract = false;
-        }
+        // if (other.CompareTag("Player"))
+        // {
+        //     canInteract = false;
+        // }
     }
 }
