@@ -51,7 +51,7 @@ public class UndecidedBehaviour : MonoBehaviour
                 limitReached = true;
                 _playerActions.isUndecidedRecruited = false;
                 canLure = false;
-                gameObject.SetActive(false);
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
             }
         }
     }

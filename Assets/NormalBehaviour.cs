@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 using Object = System.Object;
@@ -26,6 +27,7 @@ public class NormalBehaviour : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
+        InvokeRepeating(nameof(CheckUndecided), 5f, 1f);
     }
 
     // Update is called once per frame
@@ -46,7 +48,7 @@ public class NormalBehaviour : MonoBehaviour
             else if (distance >= 4)
             {
                 transform.position = Vector2.MoveTowards(transform.position, _playerMovement.transform.position,
-                     Random.Range(1f, moveSpeed) * Time.deltaTime);
+                     (moveSpeed) * Time.deltaTime);
             }
         }
         else
@@ -66,7 +68,14 @@ public class NormalBehaviour : MonoBehaviour
         {
             StartCoroutine(DeathLoop());
         }
-        
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Undecided"))
+        {
+            StartCoroutine(DeathLoop());
+        }
     }
 
     IEnumerator DeathLoop()

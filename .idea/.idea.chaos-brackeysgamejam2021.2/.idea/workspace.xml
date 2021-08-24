@@ -14,8 +14,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Test_Scripts/Test_Undecided.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/PlayerActions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/UndecidedBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Test_Scripts/Test_Normal.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Test_Scripts/SpawnManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1x7d3UYSvb89LawVRc1cHPHD6Dx" />
   <component name="ProjectViewState">
@@ -63,6 +66,8 @@
       <workItem from="1629723652332" duration="1532000" />
       <workItem from="1629730653320" duration="11090000" />
       <workItem from="1629747244155" duration="1808000" />
+      <workItem from="1629793853503" duration="11354000" />
+      <workItem from="1629822918220" duration="5545000" />
     </task>
     <servers />
   </component>
