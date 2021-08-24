@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Normals
   - Undecided
+  - Hunter
+  - Opportunists
   layers:
   - Default
   - TransparentFX

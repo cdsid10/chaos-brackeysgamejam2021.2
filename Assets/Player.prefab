@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 8284931104188510717}
   - component: {fileID: 8284931104188510716}
   - component: {fileID: 785710078}
+  - component: {fileID: 1847409397}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -240,7 +241,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &8284931104188510716
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -264,7 +265,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8284931104188510713}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e91b306f8258ee24d9e58f3bbef99259, type: 3}
   m_Name: 
@@ -272,3 +273,17 @@ MonoBehaviour:
   isPressing: 0
   canInteractUndecided: 0
   isUndecidedRecruited: 0
+--- !u!114 &1847409397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8284931104188510713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd7c36c9a6ac6ef4a9eb02988cf44292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recruited: 0
+  opportunists: {fileID: 0}
