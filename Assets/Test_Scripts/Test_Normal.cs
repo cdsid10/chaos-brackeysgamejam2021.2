@@ -11,9 +11,13 @@ public class Test_Normal : MonoBehaviour
     private LureManager _lureManager;
     private Test_Undecided _testUndecided;
     private SpawnManager _spawnManager;
+    private PlayerTestActions _playerTestActions;
 
     private Rigidbody2D _rigidbody2D;
     private CircleCollider2D _circleCollider2D;
+    public bool isVulnerable;
+    [SerializeField]
+    private bool canInteractWPlayer;
 
     [SerializeField] private float moveSpeed;
 
@@ -35,6 +39,7 @@ public class Test_Normal : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _playerTestActions = FindObjectOfType<PlayerTestActions>();
         _spawnManager.normalsInScene.Add(gameObject.transform);
     }
 
@@ -46,17 +51,21 @@ public class Test_Normal : MonoBehaviour
 
         if (!_lureManager.canLure)
         {
-            if (distance > 0 && distance <= 3.5f)
+            if (distance > 0 && distance < 3)
             {
                 transform.position = Vector2.MoveTowards(position, _playerMovement.transform.position,
                     -1 * Random.Range(1f, moveSpeed) * Time.deltaTime);
             }
-            else if (distance > 3.5f && distance <= 5)
+            else if(distance > 3 && distance < 3.5f)
+            {
+                transform.position = position;
+            }
+            else if (distance > 3.5f && distance < 6)
             {
                 transform.position = Vector2.MoveTowards(position, _playerMovement.transform.position,
                     Random.Range(1f, moveSpeed) * Time.deltaTime);
             }
-            else if (distance > 5)
+            else if (distance > 6)
             {
                 transform.position = transform.position;
             }
@@ -70,9 +79,30 @@ public class Test_Normal : MonoBehaviour
                     CheckUndecided();
                 }
                 var undecidedPosition = _testUndecided.transform.position;
-                transform.position = Vector3.MoveTowards(transform.position, undecidedPosition,
-                    Random.Range(0.2f, 0.8f) * Time.deltaTime);
+                float undecidedDistance = Vector3.Distance(position, undecidedPosition);
+
+                if (undecidedDistance < 2)
+                {
+                    transform.position = position;
+                    isVulnerable = true;
+                    gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, undecidedPosition,
+                        Random.Range(0.2f, 0.8f) * Time.deltaTime);
+                }
             }
+        }
+
+        if (canInteractWPlayer)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                //_playerTestActions.isFamed = false;
+                Destroy(gameObject);
+            }
+            
         }
         
     }
@@ -92,6 +122,14 @@ public class Test_Normal : MonoBehaviour
         if (other.CompareTag("Undecided") && _testUndecided.isRecruited)
         {
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        if (other.CompareTag("Player"))
+        {
+            if (isVulnerable)
+            {
+                canInteractWPlayer = true;
+            }
         }
     }
 

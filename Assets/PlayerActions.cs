@@ -10,6 +10,7 @@ public class PlayerActions : MonoBehaviour
     public bool isPressing;
     public bool canInteractUndecided, isUndecidedRecruited;
     
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -45,6 +46,8 @@ public class PlayerActions : MonoBehaviour
         {
             canInteractUndecided = true;
         }
+
+        
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -53,6 +56,8 @@ public class PlayerActions : MonoBehaviour
         {
             canInteractUndecided = false;
         }
+
+        
     }
     
     void CheckUndecided()

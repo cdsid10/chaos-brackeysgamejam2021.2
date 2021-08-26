@@ -43,14 +43,6 @@ public class Test_Undecided : MonoBehaviour
         {
             canInteractPlayer = true;
         }
-
-        if (other.CompareTag("Normals"))
-        {
-            if (isRecruited)
-            {
-                
-            }
-        }
     }
 
     private void OnTriggerExit2D(Collider2D other)

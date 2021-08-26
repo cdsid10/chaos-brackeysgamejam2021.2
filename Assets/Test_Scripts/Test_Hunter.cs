@@ -43,7 +43,7 @@ public class Test_Hunter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Opportunists"))
+        if (other.CompareTag("Mine"))
         {
             canMove = false;
             StartCoroutine(StopASec());

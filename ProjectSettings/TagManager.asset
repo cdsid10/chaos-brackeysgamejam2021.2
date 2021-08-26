@@ -8,6 +8,7 @@ TagManager:
   - Undecided
   - Hunter
   - Opportunists
+  - Mine
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Fill
+    uniqueID: 686404013
+    locked: 0
+  - name: Things
+    uniqueID: 1208101489
     locked: 0

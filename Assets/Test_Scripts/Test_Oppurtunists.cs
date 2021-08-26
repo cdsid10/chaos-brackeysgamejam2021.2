@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class Test_Oppurtunists : MonoBehaviour
 {
+    private PlayerTestActions _playerTestActions;
     private FameManager _fameManager;
     private PickupManager _pickupManager;
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
+        _playerTestActions = FindObjectOfType<PlayerTestActions>();
         _fameManager = FindObjectOfType<FameManager>();
         _pickupManager = FindObjectOfType<PickupManager>();
     }
@@ -18,15 +21,10 @@ public class Test_Oppurtunists : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
+        if (_playerTestActions.hasUsed)
         {
-            _fameManager.fame -= _pickupManager.oppurtunistsCost;
-            _pickupManager.oppurtunistsInBag++;
+            _playerTestActions.hasUsed = false;
+            Destroy(gameObject);
         }
     }
 }
