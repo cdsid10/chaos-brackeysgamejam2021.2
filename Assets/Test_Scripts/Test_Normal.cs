@@ -74,9 +74,14 @@ public class Test_Normal : MonoBehaviour
                 transform.position = Vector2.MoveTowards(position, _playerMovement.transform.position,
                     Random.Range(0.5f, moveSpeed) * Time.deltaTime);
             }
-            else if (distance > 8)
+            else if (distance > 8 && distance < 14)
             {
                 transform.position = transform.position;
+            }
+            else if (distance >= 14)
+            {
+                transform.position = Vector2.MoveTowards(position, _playerMovement.transform.position,
+                    (0.25f) * Time.deltaTime);
             }
         }
         else
@@ -99,7 +104,7 @@ public class Test_Normal : MonoBehaviour
                 else
                 {
                     transform.position = Vector3.MoveTowards(transform.position, undecidedPosition,
-                        Random.Range(0.4f, 1.2f) * Time.deltaTime);
+                        Random.Range(0.8f, 1.6f) * Time.deltaTime);
                 }
             }
         }

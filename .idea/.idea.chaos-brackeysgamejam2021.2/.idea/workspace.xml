@@ -31,7 +31,6 @@
     <setting file="file://$PROJECT_DIR$/Assets/Test_Scripts/Test_Normal.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Test_Scripts/SpawnManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Test_Scripts/DamageFame.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/HolyDamage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Test_Scripts/FameManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1x7d3UYSvb89LawVRc1cHPHD6Dx" />
@@ -88,7 +87,8 @@
       <workItem from="1630021245476" duration="683000" />
       <workItem from="1630022159371" duration="1000" />
       <workItem from="1630066210142" duration="18585000" />
-      <workItem from="1630091165569" duration="5619000" />
+      <workItem from="1630091165569" duration="7482000" />
+      <workItem from="1630098724220" duration="9066000" />
     </task>
     <servers />
   </component>

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test_Hunter : MonoBehaviour
+public class Test_HunterKing : MonoBehaviour
 {
     private FameManager _fameManager;
     private SpawnManager _spawnManager;
@@ -27,6 +27,8 @@ public class Test_Hunter : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+        health = 5;
+        speed = 3;
     }
 
     // Update is called once per frame
@@ -40,8 +42,9 @@ public class Test_Hunter : MonoBehaviour
 
         if (health <= 0)
         {
-            _spawnManager.hasHunterSpawned = false;
-            _spawnManager.huntersPerished++;
+            //End Queue
+            //_spawnManager.hasHunterSpawned = false;
+            //_spawnManager.huntersPerished++;
             Destroy(gameObject);
         }
         

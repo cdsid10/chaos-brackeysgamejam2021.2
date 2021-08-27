@@ -10,6 +10,7 @@ public class PlayerTestActions : MonoBehaviour
     private PickupManager _pickupManager;
     private FameManager _fameManager;
     private Test_Normal _testNormal;
+    private SpawnManager _spawnManager;
 
     [SerializeField] private Animator fillAnimator;
     
@@ -23,6 +24,7 @@ public class PlayerTestActions : MonoBehaviour
     [SerializeField]
     private float holdTimer;
     public Image fillArea;
+    private GameObject oppUi;
 
     [SerializeField] private GameObject opportunists;
     private static readonly int IsFilled = Animator.StringToHash("isFilled");
@@ -36,6 +38,8 @@ public class PlayerTestActions : MonoBehaviour
         _testNormal = FindObjectOfType<Test_Normal>();
         fillArea.fillAmount = 0;
         fillAnimator = GetComponentInChildren<Animator>();
+        oppUi = GameObject.FindGameObjectWithTag("MineUI");
+        _spawnManager = FindObjectOfType<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -50,6 +54,7 @@ public class PlayerTestActions : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 Instantiate(opportunists, transform.position, quaternion.identity);
+                oppUi.GetComponent<Image>().color = new Color(1, 1, 1, 0);
                 _pickupManager.oppurtunistsInBag--;
             }
         }
@@ -73,7 +78,6 @@ public class PlayerTestActions : MonoBehaviour
         if (other.CompareTag("Normals"))
         {
             canInteractNormals = true;
-            Debug.Log("Und");
         }
     }
 
@@ -109,21 +113,48 @@ public class PlayerTestActions : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Space))
             {
-                holdTimer += Time.deltaTime;
-                fillArea.fillAmount = holdTimer / 2;
-                fillAnimator.SetBool(IsFilled, fillArea.fillAmount >= 1);
+                if (_fameManager.fame > 50)
+                {
+                    holdTimer += Time.deltaTime;
+                    if (_spawnManager.huntersPerished >= 2)
+                    {
+                        fillArea.fillAmount = holdTimer / 1.5f;
+                    }
+                    else
+                    {
+                        fillArea.fillAmount = holdTimer / 2;
+                    }
+                    fillAnimator.SetBool(IsFilled, fillArea.fillAmount >= 1);
+                }
+                else
+                {
+                    //Ui to show cant interact, low fame.
+                }
             }
-            
-            if (Input.GetKeyUp(KeyCode.Space) && holdTimer > 2)
+
+            if (Input.GetKeyUp(KeyCode.Space) && holdTimer >= 1.5f && _spawnManager.huntersPerished >= 2)
             {
                 hasUsed = true;
-                _fameManager.fame -= _pickupManager.oppurtunistsCost;
+                _fameManager.SubOpFame();
+                _pickupManager.oppurtunistsInBag++;
+                holdTimer = 0;
+                fillArea.fillAmount = 0;
+            }
+            else if (Input.GetKeyUp(KeyCode.Space) && holdTimer >= 2 && _spawnManager.huntersPerished < 2)
+            {
+                hasUsed = true;
+                _fameManager.SubOpFame();
                 _pickupManager.oppurtunistsInBag++;
                 holdTimer = 0;
                 fillArea.fillAmount = 0;
             }
 
-            if (Input.GetKeyUp(KeyCode.Space) && holdTimer < 2)
+            if (Input.GetKeyUp(KeyCode.Space) && holdTimer < 1.5f && _spawnManager.huntersPerished >= 2)
+            {
+                holdTimer = 0;
+                fillArea.fillAmount = 0;
+            }
+            else if (Input.GetKeyUp(KeyCode.Space) && holdTimer < 2 && _spawnManager.huntersPerished < 2)
             {
                 holdTimer = 0;
                 fillArea.fillAmount = 0;

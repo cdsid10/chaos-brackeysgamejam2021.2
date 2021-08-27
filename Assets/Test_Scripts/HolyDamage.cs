@@ -6,6 +6,7 @@ using UnityEngine;
 public class HolyDamage : MonoBehaviour
 {
     private FameManager _fameManager;
+    private SpawnManager _spawnManager;
     private PlayerMovement _playerMovement;
     
     // Start is called before the first frame update
@@ -13,6 +14,7 @@ public class HolyDamage : MonoBehaviour
     {
         _fameManager = FindObjectOfType<FameManager>();
         _playerMovement = FindObjectOfType<PlayerMovement>();
+        _spawnManager = FindObjectOfType<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -38,6 +40,13 @@ public class HolyDamage : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _playerMovement.GetComponent<SpriteRenderer>().color = Color.white;
         _playerMovement.GetComponent<CircleCollider2D>().enabled = true;
-        _playerMovement.moveSpeed = 3f;
+        if (_spawnManager.huntersPerished >= 2)
+        {
+            _playerMovement.moveSpeed = 4f;
+        }
+        else if (_spawnManager.huntersPerished < 2)
+        {
+            _playerMovement.moveSpeed = 3f;
+        }
     }
 }

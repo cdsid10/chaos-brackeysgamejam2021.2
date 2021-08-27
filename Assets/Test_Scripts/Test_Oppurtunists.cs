@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class Test_Oppurtunists : MonoBehaviour
@@ -9,6 +10,7 @@ public class Test_Oppurtunists : MonoBehaviour
     private PlayerTestActions _playerTestActions;
     private FameManager _fameManager;
     private PickupManager _pickupManager;
+    private SpawnManager _spawnManager;
 
     [SerializeField]
     private GameObject oppUi;
@@ -22,6 +24,9 @@ public class Test_Oppurtunists : MonoBehaviour
         _playerTestActions = FindObjectOfType<PlayerTestActions>();
         _fameManager = FindObjectOfType<FameManager>();
         _pickupManager = FindObjectOfType<PickupManager>();
+        _spawnManager = FindObjectOfType<SpawnManager>();
+        _spawnManager.hasOppSpawned = true;
+        oppUi = GameObject.FindGameObjectWithTag("MineUI");
     }
 
     // Update is called once per frame
@@ -30,7 +35,8 @@ public class Test_Oppurtunists : MonoBehaviour
         if (_playerTestActions.hasUsed)
         {
             _playerTestActions.hasUsed = false;
-            oppUi.SetActive(true);
+            oppUi.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            _spawnManager.hasOppSpawned = false;
             Destroy(gameObject);
         }
     }

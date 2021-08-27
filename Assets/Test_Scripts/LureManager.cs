@@ -40,6 +40,7 @@ public class LureManager : MonoBehaviour
             {
                 Instantiate(undecided, spawnPos, quaternion.identity);
                 var flareObj =Instantiate(flare, spawnPos, quaternion.identity) as GameObject;
+                flareObj.GetComponent<SpriteRenderer>().color = new Color32(46, 32, 60, 255);
                 flareObj.GetComponent<Animator>().SetTrigger("spawn");
                 Destroy(flareObj, 6);
                 
