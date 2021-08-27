@@ -7,10 +7,14 @@ public class MineDamage : MonoBehaviour
 {
     private Test_Hunter _testHunter;
     
+    [SerializeField]
+    private GameObject oppUi;
+    
     // Start is called before the first frame update
     void Start()
     {
         _testHunter = FindObjectOfType<Test_Hunter>();
+        oppUi = GameObject.FindGameObjectWithTag("MineUI");
     }
 
     // Update is called once per frame
@@ -24,6 +28,7 @@ public class MineDamage : MonoBehaviour
         if (other.CompareTag("Hunter"))
         {
             _testHunter.health--;
+            oppUi.SetActive(false);
             Destroy(gameObject);
         }
     }

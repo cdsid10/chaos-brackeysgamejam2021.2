@@ -20,6 +20,7 @@ public class PlayerTestActions : MonoBehaviour
     public bool hasUsed;
     public bool isFamed;
 
+    [SerializeField]
     private float holdTimer;
     public Image fillArea;
 
@@ -42,7 +43,7 @@ public class PlayerTestActions : MonoBehaviour
     {
         InteractWUndecided();
         InteractWOpportunists();
-        //InteractWNormals();
+        InteractWNormals();
 
         if (_pickupManager.oppurtunistsInBag > 0)
         {
@@ -61,6 +62,7 @@ public class PlayerTestActions : MonoBehaviour
         if (other.CompareTag("Undecided"))
         {
             canInteractUndecided = true;
+            
         }
         
         if (other.CompareTag("Opportunists"))
@@ -71,6 +73,7 @@ public class PlayerTestActions : MonoBehaviour
         if (other.CompareTag("Normals"))
         {
             canInteractNormals = true;
+            Debug.Log("Und");
         }
     }
 
@@ -96,24 +99,7 @@ public class PlayerTestActions : MonoBehaviour
     {
         if (canInteractUndecided)
         {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                holdTimer += Time.deltaTime;
-                fillArea.fillAmount = holdTimer / 2;
-            }
-            
-            if (Input.GetKeyUp(KeyCode.Space) && holdTimer > 2)
-            {
-                recruited = true;
-                holdTimer = 0;
-                fillArea.fillAmount = 0;
-            }
-            else if (Input.GetKeyUp(KeyCode.Space) && holdTimer < 2)
-            {
-                recruited = false;
-                holdTimer = 0;
-                fillArea.fillAmount = 0;
-            }
+            recruited = Input.GetKeyDown(KeyCode.Space) ? true : false;
         }
     }
 
@@ -125,6 +111,7 @@ public class PlayerTestActions : MonoBehaviour
             {
                 holdTimer += Time.deltaTime;
                 fillArea.fillAmount = holdTimer / 2;
+                fillAnimator.SetBool(IsFilled, fillArea.fillAmount >= 1);
             }
             
             if (Input.GetKeyUp(KeyCode.Space) && holdTimer > 2)
@@ -142,7 +129,7 @@ public class PlayerTestActions : MonoBehaviour
                 fillArea.fillAmount = 0;
             }
             
-            fillAnimator.SetBool(IsFilled, fillArea.fillAmount >= 1);
+            
         }
         else
         {
@@ -153,11 +140,22 @@ public class PlayerTestActions : MonoBehaviour
 
     void InteractWNormals()
     {
-        if (!canInteractNormals) return;
-        if (!_testNormal.isVulnerable) return;
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
-        Debug.Log("famed");
-        isFamed = true;
-        _fameManager.fame += 10;
+        // if (!canInteractNormals) return;
+        // if (!_testNormal.isVulnerable) return;
+        // if (!Input.GetKeyDown(KeyCode.Space)) return;
+        // Debug.Log("famed");
+        // isFamed = true;
+        // _fameManager.fame += 10;
+
+        if (canInteractNormals)
+        {
+            if (_testNormal.isVulnerable)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Debug.Log("fame");
+                }
+            }
+        }
     }
 }

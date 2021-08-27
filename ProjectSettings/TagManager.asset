@@ -9,6 +9,8 @@ TagManager:
   - Hunter
   - Opportunists
   - Mine
+  - Holy
+  - MineUI
   layers:
   - Default
   - TransparentFX
@@ -18,8 +20,8 @@ TagManager:
   - UI
   - Player
   - Enemy
-  - 
-  - 
+  - Holy
+  - Hunter
   - 
   - 
   - 
@@ -51,4 +53,10 @@ TagManager:
     locked: 0
   - name: Things
     uniqueID: 1208101489
+    locked: 0
+  - name: Player
+    uniqueID: 2679041163
+    locked: 0
+  - name: Above_Player
+    uniqueID: 1696563155
     locked: 0

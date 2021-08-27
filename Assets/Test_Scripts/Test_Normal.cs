@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public class Test_Normal : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Test_Normal : MonoBehaviour
     private Test_Undecided _testUndecided;
     private SpawnManager _spawnManager;
     private PlayerTestActions _playerTestActions;
+    private FameManager _fameManager;
 
     private Rigidbody2D _rigidbody2D;
     private CircleCollider2D _circleCollider2D;
@@ -19,7 +21,12 @@ public class Test_Normal : MonoBehaviour
     [SerializeField]
     private bool canInteractWPlayer;
 
+    [SerializeField] private float CDTimer;
+
     [SerializeField] private float moveSpeed;
+    [SerializeField] Image fillArea;
+
+    [SerializeField] private List<Sprite> sprites;
 
 
     private void Awake()
@@ -40,7 +47,9 @@ public class Test_Normal : MonoBehaviour
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _spawnManager = FindObjectOfType<SpawnManager>();
         _playerTestActions = FindObjectOfType<PlayerTestActions>();
-        _spawnManager.normalsInScene.Add(gameObject.transform);
+        _fameManager = FindObjectOfType<FameManager>();
+        _spawnManager.normalsInScene.Add(gameObject);
+        gameObject.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Count)];
     }
 
     // Update is called once per frame
@@ -51,28 +60,28 @@ public class Test_Normal : MonoBehaviour
 
         if (!_lureManager.canLure)
         {
-            if (distance > 0 && distance < 3)
+            if (distance > 0 && distance <= 3)
             {
                 transform.position = Vector2.MoveTowards(position, _playerMovement.transform.position,
-                    -1 * Random.Range(1f, moveSpeed) * Time.deltaTime);
+                    -1 * moveSpeed * Time.deltaTime);
             }
-            else if(distance > 3 && distance < 3.5f)
+            else if(distance > 3 && distance <= 5)
             {
                 transform.position = position;
             }
-            else if (distance > 3.5f && distance < 6)
+            else if (distance > 5 && distance <= 8)
             {
                 transform.position = Vector2.MoveTowards(position, _playerMovement.transform.position,
-                    Random.Range(1f, moveSpeed) * Time.deltaTime);
+                    Random.Range(0.5f, moveSpeed) * Time.deltaTime);
             }
-            else if (distance > 6)
+            else if (distance > 8)
             {
                 transform.position = transform.position;
             }
         }
         else
         {
-            if (_testUndecided.isRecruited && distance < 6)
+            if (_testUndecided.isRecruited && distance < 10)
             {
                 if (_testUndecided == null)
                 {
@@ -81,7 +90,7 @@ public class Test_Normal : MonoBehaviour
                 var undecidedPosition = _testUndecided.transform.position;
                 float undecidedDistance = Vector3.Distance(position, undecidedPosition);
 
-                if (undecidedDistance < 2)
+                if (undecidedDistance < Random.Range(2, 3))
                 {
                     transform.position = position;
                     isVulnerable = true;
@@ -90,21 +99,31 @@ public class Test_Normal : MonoBehaviour
                 else
                 {
                     transform.position = Vector3.MoveTowards(transform.position, undecidedPosition,
-                        Random.Range(0.2f, 0.8f) * Time.deltaTime);
+                        Random.Range(0.4f, 1.2f) * Time.deltaTime);
                 }
             }
         }
 
-        if (canInteractWPlayer)
+        if (isVulnerable)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            CDTimer += Time.deltaTime;
+            fillArea.fillAmount = CDTimer / 3f;
+            if (CDTimer > Random.Range(3f, 4f) && _lureManager.canLure)
             {
-                //_playerTestActions.isFamed = false;
+                _fameManager.AddFame();
+                _spawnManager.normalsInScene.Remove(this.gameObject);
+                _lureManager.lureCount++;
                 Destroy(gameObject);
+            }
+            else if(!_lureManager.canLure)
+            {
+                CDTimer = 0;
+                fillArea.fillAmount = CDTimer;
+                isVulnerable = false;
+                gameObject.GetComponent<SpriteRenderer>().color = Color.white;
             }
             
         }
-        
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -117,19 +136,6 @@ public class Test_Normal : MonoBehaviour
         if (other.CompareTag("Normals"))
         {
             _circleCollider2D.radius = 0.65f;
-        }
-
-        if (other.CompareTag("Undecided") && _testUndecided.isRecruited)
-        {
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        }
-
-        if (other.CompareTag("Player"))
-        {
-            if (isVulnerable)
-            {
-                canInteractWPlayer = true;
-            }
         }
     }
 

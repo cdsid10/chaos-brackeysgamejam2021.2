@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Test_Hunter : MonoBehaviour
 {
+    private FameManager _fameManager;
+    
     private Rigidbody2D _rigidbody2D;
 
     [SerializeField]
@@ -16,10 +18,13 @@ public class Test_Hunter : MonoBehaviour
     public int health;
 
     private bool canMove = true;
+    [SerializeField]
+    private float timer;
     
     // Start is called before the first frame update
     void Start()
     {
+        _fameManager = FindObjectOfType<FameManager>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         health = 3;
@@ -48,15 +53,19 @@ public class Test_Hunter : MonoBehaviour
             canMove = false;
             StartCoroutine(StopASec());
         }
+        
+        if (other.CompareTag("Player"))
+        {
+            _fameManager.gameObject.AddComponent<DamageFame>();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        // if (other.CompareTag("Opportunists"))
-        // {
-        //     transform.position = Vector2.MoveTowards(transform.position, target.transform.position, 
-        //         speed * Time.deltaTime);
-        // }
+        if (other.CompareTag("Player"))
+        {
+            Destroy(_fameManager.gameObject.GetComponent<DamageFame>());
+        }
     }
 
     IEnumerator StopASec()
@@ -64,5 +73,11 @@ public class Test_Hunter : MonoBehaviour
         transform.position = transform.position;
         yield return new WaitForSeconds(2);
         canMove = true;
+    }
+
+    IEnumerator DamagePerSec()
+    {
+        yield return new WaitForSeconds(1f);
+        _fameManager.fame -= 10;
     }
 }

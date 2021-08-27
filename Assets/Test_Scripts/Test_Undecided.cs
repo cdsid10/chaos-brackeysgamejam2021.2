@@ -11,19 +11,18 @@ public class Test_Undecided : MonoBehaviour
     [SerializeField]
     private bool canInteractPlayer;
 
-    private bool canLure;
+    private int lureCount;
     public bool isRecruited;
 
     [SerializeField]
-    private List<GameObject> normalsGameObjects = new List<GameObject>();
-
-    private float timer;
-
+    private Sprite selectedSprite, normalSprite;
+    
     // Start is called before the first frame update
     void Start()
     {
         _playerTestActions = FindObjectOfType<PlayerTestActions>();
         _lureManager = FindObjectOfType<LureManager>();
+        _lureManager.hasSpawned = true;
     }
 
     // Update is called once per frame
@@ -35,6 +34,15 @@ public class Test_Undecided : MonoBehaviour
             isRecruited = true;
             _lureManager.canLure = true;
         }
+        
+        if (_lureManager.lureCount > 4)
+        {
+            isRecruited = false;
+            _lureManager.lureCount = 0;
+            _lureManager.canLure = false;
+            _lureManager.hasSpawned = false;
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -42,6 +50,7 @@ public class Test_Undecided : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canInteractPlayer = true;
+            gameObject.GetComponent<SpriteRenderer>().sprite = selectedSprite;
         }
     }
 
@@ -50,33 +59,7 @@ public class Test_Undecided : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canInteractPlayer = false;
+            gameObject.GetComponent<SpriteRenderer>().sprite = normalSprite;
         }
     }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        
-    }
-
-    IEnumerator AddToList()
-    {
-        _lureManager.normalsGameObjects.Add(FindObjectOfType<Test_Normal>().gameObject);
-        // _lureManager.numberOfLured++;
-        // if (_lureManager.normalsGameObjects.Count > _lureManager.numberOfLured)
-        // {
-        //     _lureManager.normalsGameObjects.Remove(FindObjectOfType<Test_Normal>().gameObject);
-        // }
-        if (_lureManager.normalsGameObjects.Count > 4)
-        {
-            yield return new WaitForSeconds(0.5f);
-            Destroy(gameObject);
-        }
-    }
-
-    IEnumerator Timer()
-    {
-        yield return new WaitForSeconds(2);
-        
-    }
-    
 }
