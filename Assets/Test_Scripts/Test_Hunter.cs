@@ -9,6 +9,7 @@ public class Test_Hunter : MonoBehaviour
     private SpawnManager _spawnManager;
     
     private Rigidbody2D _rigidbody2D;
+    private SpriteRenderer _spriteRenderer;
 
     [SerializeField]
     private Transform target;
@@ -20,10 +21,13 @@ public class Test_Hunter : MonoBehaviour
 
     private bool canMove = true;
 
+    [SerializeField] private Sprite[] sprites;
+
     // Start is called before the first frame update
     void Start()
     {
         _fameManager = FindObjectOfType<FameManager>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spawnManager = FindObjectOfType<SpawnManager>();
@@ -43,6 +47,19 @@ public class Test_Hunter : MonoBehaviour
             _spawnManager.hasHunterSpawned = false;
             _spawnManager.huntersPerished++;
             Destroy(gameObject);
+        }
+
+        if (health >= 3)
+        {
+            _spriteRenderer.sprite = sprites[2];
+        }
+        else if (health == 2)
+        {
+            _spriteRenderer.sprite = sprites[1];
+        }
+        else if (health == 1)
+        {
+            _spriteRenderer.sprite = sprites[0];
         }
         
     }

@@ -21,12 +21,19 @@ public class PlayerTestActions : MonoBehaviour
     public bool hasUsed;
     public bool isFamed;
 
+    public int firstTriggerUnd = 0;
+    public int firstTriggerOpp = 0;
+
     [SerializeField]
     private float holdTimer;
     public Image fillArea;
     private GameObject oppUi;
 
     [SerializeField] private GameObject opportunists;
+    [SerializeField] private GameObject ControlsImgUi;
+    [SerializeField] private GameObject tutorialText, tutorialTextOpp;
+    [SerializeField] private GameObject fameText, fameKingText;
+
     private static readonly int IsFilled = Animator.StringToHash("isFilled");
 
 
@@ -40,6 +47,7 @@ public class PlayerTestActions : MonoBehaviour
         fillAnimator = GetComponentInChildren<Animator>();
         oppUi = GameObject.FindGameObjectWithTag("MineUI");
         _spawnManager = FindObjectOfType<SpawnManager>();
+        StartCoroutine(ControlsUi());
     }
 
     // Update is called once per frame
@@ -48,6 +56,16 @@ public class PlayerTestActions : MonoBehaviour
         InteractWUndecided();
         InteractWOpportunists();
         InteractWNormals();
+        
+        if (firstTriggerUnd == 1)
+        {
+            StartCoroutine(FirstTrigger());
+        }
+
+        if (firstTriggerOpp == 1)
+        {
+            StartCoroutine(FirstTriggerOpp());
+        }
 
         if (_pickupManager.oppurtunistsInBag > 0)
         {
@@ -59,7 +77,14 @@ public class PlayerTestActions : MonoBehaviour
             }
         }
 
-        
+        if (_spawnManager.huntersPerished == 1 && !_spawnManager.hasHunterSpawned)
+        {
+            StartCoroutine(FirstHunterDead());
+        }
+        else if (_spawnManager.huntersPerished == 2 && !_spawnManager.hasHunterSpawned)
+        {
+            StartCoroutine(SecondHunterDead());
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -67,12 +92,13 @@ public class PlayerTestActions : MonoBehaviour
         if (other.CompareTag("Undecided"))
         {
             canInteractUndecided = true;
-            
+            firstTriggerUnd++;
         }
         
         if (other.CompareTag("Opportunists"))
         {
             canInteractOpportunists = true;
+            firstTriggerOpp++;
         }
 
         if (other.CompareTag("Normals"))
@@ -113,7 +139,7 @@ public class PlayerTestActions : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Space))
             {
-                if (_fameManager.fame > 50)
+                if (_fameManager.fame >= 50)
                 {
                     holdTimer += Time.deltaTime;
                     if (_spawnManager.huntersPerished >= 2)
@@ -188,5 +214,39 @@ public class PlayerTestActions : MonoBehaviour
                 }
             }
         }
+    }
+
+    IEnumerator ControlsUi()
+    {
+        yield return new WaitForSeconds(4);
+        ControlsImgUi.SetActive(false);
+    }
+    
+    IEnumerator FirstTrigger()
+    {
+        tutorialText.SetActive(true);
+        yield return new WaitForSeconds(4);
+        tutorialText.SetActive(false);
+    }
+    
+    IEnumerator FirstTriggerOpp()
+    {
+        tutorialTextOpp.SetActive(true);
+        yield return new WaitForSeconds(4);
+        tutorialTextOpp.SetActive(false);
+    }
+
+    IEnumerator FirstHunterDead()
+    {
+        fameText.SetActive(true);
+        yield return new WaitForSeconds(3);
+        Destroy(fameText);
+    }
+
+    IEnumerator SecondHunterDead()
+    {
+        fameKingText.SetActive(true);
+        yield return new WaitForSeconds(3);
+        Destroy(fameKingText);
     }
 }

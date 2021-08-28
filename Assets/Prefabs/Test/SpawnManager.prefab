@@ -43,10 +43,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd7ee8119847b7e45b3c88e9fbdff75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canNormalSpawn: 0
+  _animator: {fileID: 0}
+  hasHunterSpawned: 0
+  hasOppSpawned: 0
+  huntersPerished: 0
   normals: {fileID: 5490375703516924081, guid: 46c65fa8e24abe1479c0adf5a73c3314, type: 3}
   holyPeeps: {fileID: 2621346612100201395, guid: d7483180d02d61d40bfc074bb3ed86ad, type: 3}
   obstacles:
   - {fileID: 6118031274928354600, guid: 8d5ec64890392fd48969f1b4d7ea9001, type: 3}
   - {fileID: 408799007982499926, guid: b60d676061317c944a70aed1a1d37181, type: 3}
+  hunterSpawnPos: {fileID: 0}
+  hunter: {fileID: 8224726554637015944, guid: c127b6200e0507946a44b9efeaaaa9d2, type: 3}
+  hunterKing: {fileID: 2717077291576016168, guid: bf9f241659dee434f878c6475fe0d70f, type: 3}
+  opportunists: {fileID: 6167592704276874262, guid: 2183a4f7630e7aa48801889ff531d283, type: 3}
+  flare: {fileID: 8095098975166435009, guid: b2b6d89814fa29847ac8c2a71298c185, type: 3}
+  hunterText: {fileID: 0}
+  hunterKingText: {fileID: 0}
+  hunterImg2Hp: {fileID: 0}
+  hunterImg3Hp: {fileID: 0}
+  hunterImgKing: {fileID: 0}
   normalsInScene: []

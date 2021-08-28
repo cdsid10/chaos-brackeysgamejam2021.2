@@ -13,9 +13,12 @@ public class Test_Undecided : MonoBehaviour
 
     private int lureCount;
     public bool isRecruited;
+    
 
     [SerializeField]
     private Sprite selectedSprite, normalSprite;
+
+    
     
     // Start is called before the first frame update
     void Start()
@@ -43,6 +46,8 @@ public class Test_Undecided : MonoBehaviour
             _lureManager.hasSpawned = false;
             Destroy(gameObject);
         }
+
+        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -62,4 +67,6 @@ public class Test_Undecided : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().sprite = normalSprite;
         }
     }
+
+    
 }

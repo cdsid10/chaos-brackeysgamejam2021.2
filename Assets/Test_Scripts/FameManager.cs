@@ -15,7 +15,10 @@ public class FameManager : MonoBehaviour
     
     public int fame;
 
-    private Color32 orange = new Color32(209, 134, 70, 255);
+    private Color32 orange = new Color32(220, 140, 60, 255);
+    private Color32 green = new Color32(50,160,80,255);
+    private Color32 red = new Color32(150,30,40,255);
+    
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +34,7 @@ public class FameManager : MonoBehaviour
 
         if (fame >= 200)
         {
-            _fameText.color = Color.green;
+            _fameText.color = green;
         }
         else if (fame > 50 && fame < 200)
         {
@@ -39,10 +42,10 @@ public class FameManager : MonoBehaviour
         }
         else if (fame <= 50)
         {
-            _fameText.color = Color.red;
+            _fameText.color = red;
         }
         
-        if (fame <= 0)
+        if (fame < 0)
         {
             Debug.Log("End");
         }
@@ -66,7 +69,7 @@ public class FameManager : MonoBehaviour
     IEnumerator SubOppFame()
     {
         _fameAddSubText.gameObject.SetActive(true);
-        _fameAddSubText.color = Color.red;
+        _fameAddSubText.color = red;
         _fameAddSubText.text = "-50";
         _animator.SetTrigger("change");
         fame -= 50;
@@ -79,7 +82,7 @@ public class FameManager : MonoBehaviour
         if (_spawnManager.huntersPerished >= 2)
         {
             _fameAddSubText.gameObject.SetActive(true);
-            _fameAddSubText.color = Color.red;
+            _fameAddSubText.color = red;
             _fameAddSubText.text = "-20";
             _animator.SetTrigger("change");
             fame -= 20;
@@ -89,7 +92,7 @@ public class FameManager : MonoBehaviour
         else if(_spawnManager.huntersPerished < 2)
         {
             _fameAddSubText.gameObject.SetActive(true);
-            _fameAddSubText.color = Color.red;
+            _fameAddSubText.color = red;
             _fameAddSubText.text = "-10";
             _animator.SetTrigger("change");
             fame -= 10;
@@ -101,7 +104,7 @@ public class FameManager : MonoBehaviour
     IEnumerator FameAdd()
     {
         _fameAddSubText.gameObject.SetActive(true);
-        _fameAddSubText.color = Color.green;
+        _fameAddSubText.color = green;
         _fameAddSubText.text = "+10";
         _animator.SetTrigger("change");
         fame += 10;
