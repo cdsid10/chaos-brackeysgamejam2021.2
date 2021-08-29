@@ -249,6 +249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isVulnerable: 0
   canInteractWPlayer: 0
+  voidObj: {fileID: 936187473997628461, guid: 1b42d61bbc7bb0746be0bd65ece0af3a, type: 3}
   CDTimer: 0
   moveSpeed: 2
   fillArea: {fileID: 2738576209738231581}

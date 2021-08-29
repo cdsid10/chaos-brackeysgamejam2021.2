@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Test_Hunter : MonoBehaviour
@@ -10,6 +11,7 @@ public class Test_Hunter : MonoBehaviour
     
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
+    private Animator _animator;
 
     [SerializeField]
     private Transform target;
@@ -23,14 +25,17 @@ public class Test_Hunter : MonoBehaviour
 
     [SerializeField] private Sprite[] sprites;
 
+    [SerializeField] private GameObject particleHunter;
+
     // Start is called before the first frame update
     void Start()
     {
         _fameManager = FindObjectOfType<FameManager>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -69,6 +74,7 @@ public class Test_Hunter : MonoBehaviour
         if (other.CompareTag("Mine"))
         {
             canMove = false;
+            Instantiate(particleHunter, transform.position, quaternion.identity);
             StartCoroutine(StopASec());
         }
         
@@ -88,14 +94,10 @@ public class Test_Hunter : MonoBehaviour
 
     IEnumerator StopASec()
     {
+        _animator.SetTrigger("staggered");
         transform.position = transform.position;
         yield return new WaitForSeconds(2);
         canMove = true;
     }
-
-    IEnumerator DamagePerSec()
-    {
-        yield return new WaitForSeconds(1f);
-        _fameManager.fame -= 10;
-    }
+    
 }

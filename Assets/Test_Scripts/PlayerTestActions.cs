@@ -11,6 +11,7 @@ public class PlayerTestActions : MonoBehaviour
     private FameManager _fameManager;
     private Test_Normal _testNormal;
     private SpawnManager _spawnManager;
+    private AudioManager _audioManager;
 
     [SerializeField] private Animator fillAnimator;
     
@@ -32,7 +33,7 @@ public class PlayerTestActions : MonoBehaviour
     [SerializeField] private GameObject opportunists;
     [SerializeField] private GameObject ControlsImgUi;
     [SerializeField] private GameObject tutorialText, tutorialTextOpp;
-    [SerializeField] private GameObject fameText, fameKingText;
+    [SerializeField] private GameObject fameText, fameKingText, costText;
 
     private static readonly int IsFilled = Animator.StringToHash("isFilled");
 
@@ -47,6 +48,7 @@ public class PlayerTestActions : MonoBehaviour
         fillAnimator = GetComponentInChildren<Animator>();
         oppUi = GameObject.FindGameObjectWithTag("MineUI");
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _audioManager = FindObjectOfType<AudioManager>();
         StartCoroutine(ControlsUi());
     }
 
@@ -66,6 +68,8 @@ public class PlayerTestActions : MonoBehaviour
         {
             StartCoroutine(FirstTriggerOpp());
         }
+
+        
 
         if (_pickupManager.oppurtunistsInBag > 0)
         {
@@ -99,6 +103,10 @@ public class PlayerTestActions : MonoBehaviour
         {
             canInteractOpportunists = true;
             firstTriggerOpp++;
+            if (_fameManager.fame < 50)
+            {
+                StartCoroutine(CostShow());
+            }
         }
 
         if (other.CompareTag("Normals"))
@@ -225,6 +233,7 @@ public class PlayerTestActions : MonoBehaviour
     IEnumerator FirstTrigger()
     {
         tutorialText.SetActive(true);
+        _audioManager.PlayUiSound();
         yield return new WaitForSeconds(4);
         tutorialText.SetActive(false);
     }
@@ -232,6 +241,7 @@ public class PlayerTestActions : MonoBehaviour
     IEnumerator FirstTriggerOpp()
     {
         tutorialTextOpp.SetActive(true);
+        _audioManager.PlayUiSound();
         yield return new WaitForSeconds(4);
         tutorialTextOpp.SetActive(false);
     }
@@ -239,14 +249,21 @@ public class PlayerTestActions : MonoBehaviour
     IEnumerator FirstHunterDead()
     {
         fameText.SetActive(true);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(4);
         Destroy(fameText);
     }
 
     IEnumerator SecondHunterDead()
     {
         fameKingText.SetActive(true);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(4);
         Destroy(fameKingText);
+    }
+    
+    IEnumerator CostShow()
+    {
+        costText.SetActive(true);
+        yield return new WaitForSeconds(3);
+        costText.SetActive(false);
     }
 }

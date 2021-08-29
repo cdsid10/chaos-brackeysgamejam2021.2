@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
     private FameManager _fameManager;
+    private AudioManager _audioManager;
 
     [SerializeField]
     private Animator _animator;
@@ -37,6 +38,7 @@ public class SpawnManager : MonoBehaviour
     {
         _playerMovement = FindObjectOfType<PlayerMovement>();
         _fameManager = FindObjectOfType<FameManager>();
+        _audioManager = FindObjectOfType<AudioManager>();
         HolySpawn();
         ObstacleSpawn();
     }
@@ -107,12 +109,14 @@ public class SpawnManager : MonoBehaviour
             hasHunterSpawned = true;
             StartCoroutine(Hunter2Ui());
             Instantiate(hunter, hunterSpawnPos.transform.position, quaternion.identity);
+            _audioManager.PlayHorn();
         }
         else if (_fameManager.fame >= 150 && !hasHunterSpawned && huntersPerished == 1)
         {
             hasHunterSpawned = true;
             StartCoroutine(Hunter3Ui());
             var opHunter = Instantiate(hunter, hunterSpawnPos.transform.position, quaternion.identity)as GameObject;
+            _audioManager.PlayHorn();
             opHunter.GetComponent<Test_Hunter>().speed = 2;
             opHunter.GetComponent<Test_Hunter>().health = 3;
             if (opHunter.GetComponent<Test_Hunter>().health <= 0)
@@ -127,6 +131,7 @@ public class SpawnManager : MonoBehaviour
             hasHunterSpawned = true;
             StartCoroutine(HunterKingUi());
             Instantiate(hunterKing, hunterSpawnPos.transform.position, quaternion.identity);
+            _audioManager.PlayHorn();
         }
     }
 
@@ -143,6 +148,7 @@ public class SpawnManager : MonoBehaviour
                     Instantiate(opportunists, spawnPos, quaternion.identity);
                     var flareObj =Instantiate(flare, spawnPos, quaternion.identity) as GameObject;
                     flareObj.GetComponent<SpriteRenderer>().color = new Color32(159, 123, 53, 150);
+                    _audioManager.PlayBells();
                     flareObj.GetComponent<Animator>().SetTrigger("spawn");
                     Destroy(flareObj, 6);
                 }

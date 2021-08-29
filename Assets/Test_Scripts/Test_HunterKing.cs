@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Test_HunterKing : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class Test_HunterKing : MonoBehaviour
     
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
+    private Animator _animator;
 
     [SerializeField]
     private Transform target;
@@ -22,12 +25,15 @@ public class Test_HunterKing : MonoBehaviour
     private bool canMove = true;
     
     [SerializeField] private Sprite[] sprites;
+    
+    [SerializeField] private GameObject particleHunterKing;
 
     // Start is called before the first frame update
     void Start()
     {
         _fameManager = FindObjectOfType<FameManager>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _animator = GetComponentInChildren<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spawnManager = FindObjectOfType<SpawnManager>();
@@ -46,10 +52,10 @@ public class Test_HunterKing : MonoBehaviour
 
         if (health <= 0)
         {
-            //End Queue
             _spawnManager.hasHunterSpawned = false;
             //_spawnManager.huntersPerished++;
             Destroy(gameObject);
+            SceneManager.LoadScene(4);
         }
         
         if (health >= 5)
@@ -80,6 +86,7 @@ public class Test_HunterKing : MonoBehaviour
         if (other.CompareTag("Mine"))
         {
             canMove = false;
+            Instantiate(particleHunterKing, transform.position, quaternion.identity);
             StartCoroutine(StopASec());
         }
         
@@ -99,14 +106,10 @@ public class Test_HunterKing : MonoBehaviour
 
     IEnumerator StopASec()
     {
+        _animator.SetTrigger("staggered");
         transform.position = transform.position;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2.25f);
         canMove = true;
     }
-
-    IEnumerator DamagePerSec()
-    {
-        yield return new WaitForSeconds(1f);
-        _fameManager.fame -= 10;
-    }
+    
 }

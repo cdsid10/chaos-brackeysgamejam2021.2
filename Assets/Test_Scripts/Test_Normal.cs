@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
@@ -20,6 +20,8 @@ public class Test_Normal : MonoBehaviour
     public bool isVulnerable;
     [SerializeField]
     private bool canInteractWPlayer;
+    
+    [SerializeField] GameObject voidObj;
 
     [SerializeField] private float CDTimer;
 
@@ -118,6 +120,7 @@ public class Test_Normal : MonoBehaviour
                 _fameManager.AddFame();
                 _spawnManager.normalsInScene.Remove(this.gameObject);
                 _lureManager.lureCount++;
+                Instantiate(voidObj, transform.position, quaternion.identity);
                 Destroy(gameObject);
             }
             else if(!_lureManager.canLure)

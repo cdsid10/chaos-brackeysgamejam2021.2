@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FameManager : MonoBehaviour
 {
     private SpawnManager _spawnManager;
+    private AudioManager _audioManager;
     
     [SerializeField]
     public Animator _animator;
@@ -24,7 +26,7 @@ public class FameManager : MonoBehaviour
     void Start()
     {
         _spawnManager = FindObjectOfType<SpawnManager>();
-        //fame = 100;
+        _audioManager = FindObjectOfType<AudioManager>();
     }
 
     // Update is called once per frame
@@ -47,7 +49,7 @@ public class FameManager : MonoBehaviour
         
         if (fame < 0)
         {
-            Debug.Log("End");
+            SceneManager.LoadScene(3);
         }
     }
 
@@ -72,6 +74,7 @@ public class FameManager : MonoBehaviour
         _fameAddSubText.color = red;
         _fameAddSubText.text = "-50";
         _animator.SetTrigger("change");
+        _audioManager.Sub();
         fame -= 50;
         yield return new WaitForSeconds(1.5f);
         _fameAddSubText.gameObject.SetActive(false);
@@ -85,6 +88,7 @@ public class FameManager : MonoBehaviour
             _fameAddSubText.color = red;
             _fameAddSubText.text = "-20";
             _animator.SetTrigger("change");
+            _audioManager.Sub();
             fame -= 20;
             yield return new WaitForSeconds(1.5f);
             _fameAddSubText.gameObject.SetActive(false);
@@ -95,6 +99,7 @@ public class FameManager : MonoBehaviour
             _fameAddSubText.color = red;
             _fameAddSubText.text = "-10";
             _animator.SetTrigger("change");
+            _audioManager.Sub();
             fame -= 10;
             yield return new WaitForSeconds(1.5f);
             _fameAddSubText.gameObject.SetActive(false);
@@ -107,8 +112,9 @@ public class FameManager : MonoBehaviour
         _fameAddSubText.color = green;
         _fameAddSubText.text = "+10";
         _animator.SetTrigger("change");
+        _audioManager.Add();
         fame += 10;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         _fameAddSubText.gameObject.SetActive(false);
     }
     

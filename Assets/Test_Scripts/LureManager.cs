@@ -11,6 +11,7 @@ public class LureManager : MonoBehaviour
     private PlayerMovement _playerMovement;
     private Test_Undecided _testUndecided;
     private SpawnManager _spawnManager;
+    private AudioManager _audioManager;
     
     public bool canLure;
     public bool hasSpawned = true;
@@ -26,6 +27,7 @@ public class LureManager : MonoBehaviour
         _playerMovement = FindObjectOfType<PlayerMovement>();
         _testUndecided = FindObjectOfType<Test_Undecided>();
         _spawnManager = FindObjectOfType<SpawnManager>();
+        _audioManager = FindObjectOfType<AudioManager>();
     }
 
     // Update is called once per frame
@@ -39,6 +41,7 @@ public class LureManager : MonoBehaviour
                 if (_spawnManager.huntersPerished <= 2)
                 {
                     Instantiate(undecided, spawnPos, quaternion.identity);
+                    _audioManager.PlayBells();
                     var flareObj =Instantiate(flare, spawnPos, quaternion.identity) as GameObject;
                     flareObj.GetComponent<SpriteRenderer>().color = new Color32(46, 32, 60, 125);
                     flareObj.GetComponent<Animator>().SetTrigger("spawn");
